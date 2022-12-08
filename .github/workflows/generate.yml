@@ -1,0 +1,36 @@
+name: generate
+on:
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository checkout
+        uses: actions/checkout@v3
+        with:
+          repository: tommyettinger/gdx-liftoff
+      - name: JDK setup
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: temurin
+      - name: Gradle setup
+        uses: gradle/gradle-build-action@v2
+      - name: Generate sample
+        run: ./gradlew sample --args="ktx"
+      - name: Prepare sample for release
+        shell: bash
+        run: |
+          echo "LIFTOFF_VERSION=$(cat version.txt)" >> $GITHUB_ENV 
+          echo "KTX_VERSION=$(curl https://raw.githubusercontent.com/libktx/ktx/master/version.txt)" >> $GITHUB_ENV
+          find build/dist/sample/ -type f \( -iname \*.kt -o -iname \*.gradle -o -iname \*.json -o -iname \*.xml \) | xargs sed -i -e 's/\t/  /g'
+      - name: Publish sample
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.sampleAccessToken }}
+          branch: main
+          folder: build/dist/sample
+          repository-name: libktx/ktx-sample-project
+          commit-message: 'Automatic deployment: KTX ${{ env.KTX_VERSION }}, gdx-liftoff ${{ env.LIFTOFF_VERSION }}.'
