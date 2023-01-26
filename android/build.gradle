@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-  compileSdkVersion 30
+  compileSdk 32
   sourceSets {
     main {
       manifest.srcFile 'AndroidManifest.xml'
@@ -28,15 +28,18 @@ android {
     exclude 'META-INF/DEPENDENCIES.txt'
     exclude 'META-INF/DEPENDENCIES'
     exclude 'META-INF/dependencies.txt'
+    // These are only used by GWT, and not Android.
+    exclude '**/*.gwt.xml'
   }
   defaultConfig {
     applicationId 'ktx.demo'
     minSdkVersion 19
-    targetSdkVersion 30
+    targetSdkVersion 32
     versionCode 1
     versionName "1.0"
     multiDexEnabled true
   }
+  namespace "ktx.demo"
   compileOptions {
     sourceCompatibility "1.8"
     targetCompatibility "1.8"
@@ -60,7 +63,7 @@ repositories {
 configurations { natives }
 
 dependencies {
-  coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+  coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
   implementation "com.badlogicgames.gdx-controllers:gdx-controllers-android:$gdxControllersVersion"
   implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
   implementation project(':core')

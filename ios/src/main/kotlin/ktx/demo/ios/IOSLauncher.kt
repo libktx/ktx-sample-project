@@ -11,19 +11,19 @@ import ktx.demo.Main
 
 /** Launches the iOS (RoboVM) application. */
 class IOSLauncher : IOSApplication.Delegate() {
-  override fun createApplication(): IOSApplication {
-    return IOSApplication(Main(), IOSApplicationConfiguration().apply {
-      // Configure your application here.
-    })
-  }
-
-  companion object {
-    @JvmStatic fun main(args: Array<String>) {
-      val pool = NSAutoreleasePool()
-      val principalClass: Class<UIApplication>? = null
-      val delegateClass = IOSLauncher::class.java
-      UIApplication.main(args, principalClass, delegateClass)
-      pool.close()
+    override fun createApplication(): IOSApplication {
+        return IOSApplication(Main(), IOSApplicationConfiguration().apply {
+            // Configure your application here.
+        })
     }
-  }
+
+    companion object {
+        @JvmStatic fun main(args: Array<String>) {
+            val pool = NSAutoreleasePool()
+            val principalClass: Class<UIApplication>? = null
+            val delegateClass = IOSLauncher::class.java
+            UIApplication.main(args, principalClass, delegateClass)
+            pool.close()
+        }
+    }
 }
