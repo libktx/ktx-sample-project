@@ -20,7 +20,7 @@ else {
 sourceSets.main.resources.srcDirs += [ rootProject.file('assets').path ]
 mainClassName = 'ktx.demo.lwjgl3.Lwjgl3Launcher'
 eclipse.project.name = appName + '-lwjgl3'
-sourceCompatibility = 1.8
+sourceCompatibility = 11
 
 dependencies {
   implementation "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdxControllersVersion"
@@ -69,8 +69,6 @@ jar {
 }
 
 if (JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_14)) {
-  jpackageImage.dependsOn jar
-
   runtime {
     options.set(['--strip-debug',
            '--compress', '2',

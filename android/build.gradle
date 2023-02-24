@@ -41,14 +41,14 @@ android {
   }
   namespace "ktx.demo"
   compileOptions {
-    sourceCompatibility "1.8"
-    targetCompatibility "1.8"
+    sourceCompatibility "11"
+    targetCompatibility "11"
     coreLibraryDesugaringEnabled true
   }
   kotlinOptions.jvmTarget = "1.8"
   buildTypes {
     release {
-      minifyEnabled false
+      minifyEnabled true
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
