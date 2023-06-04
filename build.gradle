@@ -31,11 +31,12 @@ configure(subprojects - project(':android')) {
 }
 
 subprojects {
-  version = '1.11.0.8-SNAPSHOT'
+  version = '1.11.0.9-SNAPSHOT'
   ext.appName = 'ktx-demo'
   repositories {
     mavenCentral()
     maven { url 'https://s01.oss.sonatype.org' }
+    // You may want to remove the following line if you have errors downloading dependencies.
     mavenLocal()
     gradlePluginPortal()
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }

@@ -8,6 +8,9 @@ import ktx.demo.Main
 
 /** Launches the desktop (LWJGL3) application. */
 fun main() {
+    // This handles macOS support and helps on Windows.
+    if (StartupHelper.startNewJvmIfRequired())
+      return
     Lwjgl3Application(Main(), Lwjgl3ApplicationConfiguration().apply {
         setTitle("ktx-demo")
         setWindowedMode(640, 480)
