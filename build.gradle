@@ -10,7 +10,6 @@ buildscript {
   }
   dependencies {
     classpath "com.android.tools.build:gradle:$androidPluginVersion"
-    classpath "com.mobidevelop.robovm:robovm-gradle-plugin:$robovmVersion"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 
   }
@@ -31,7 +30,7 @@ configure(subprojects - project(':android')) {
 }
 
 subprojects {
-  version = '1.11.0.9-SNAPSHOT'
+  version = '1.12.0.0'
   ext.appName = 'ktx-demo'
   repositories {
     mavenCentral()
