@@ -6,30 +6,21 @@ android {
   sourceSets {
     main {
       manifest.srcFile 'AndroidManifest.xml'
-      java.srcDirs = ['src/main/java', 'src/main/kotlin']
-      aidl.srcDirs = ['src/main/java', 'src/main/kotlin']
-      renderscript.srcDirs = ['src/main/java', 'src/main/kotlin']
-      res.srcDirs = ['res']
-      assets.srcDirs = ['../assets']
-      jniLibs.srcDirs = ['libs']
+      java.srcDirs('src/main/java', 'src/main/kotlin')
+      aidl.srcDirs('src/main/java', 'src/main/kotlin')
+      renderscript.srcDirs('src/main/java', 'src/main/kotlin')
+      res.srcDirs('res')
+      assets.srcDirs('../assets')
+      jniLibs.srcDirs('libs')
     }
   }
   packagingOptions {
-    // Preventing from license violations (more or less):
-    pickFirst 'META-INF/LICENSE.txt'
-    pickFirst 'META-INF/LICENSE'
-    pickFirst 'META-INF/license.txt'
-    pickFirst 'META-INF/LGPL2.1'
-    pickFirst 'META-INF/NOTICE.txt'
-    pickFirst 'META-INF/NOTICE'
-    pickFirst 'META-INF/notice.txt'
-    // Excluding unnecessary meta-data:
-    exclude 'META-INF/robovm/ios/robovm.xml'
-    exclude 'META-INF/DEPENDENCIES.txt'
-    exclude 'META-INF/DEPENDENCIES'
-    exclude 'META-INF/dependencies.txt'
-    // These are only used by GWT, and not Android.
-    exclude '**/*.gwt.xml'
+    resources.with {
+      excludes += ['META-INF/robovm/ios/robovm.xml',
+        'META-INF/DEPENDENCIES.txt', 'META-INF/DEPENDENCIES', 'META-INF/dependencies.txt', '**/*.gwt.xml']
+      pickFirsts += ['META-INF/LICENSE.txt', 'META-INF/LICENSE', 'META-INF/license.txt', 'META-INF/LGPL2.1',
+        'META-INF/NOTICE.txt', 'META-INF/NOTICE', 'META-INF/notice.txt']
+    }
   }
   defaultConfig {
     applicationId 'ktx.demo'
@@ -45,7 +36,6 @@ android {
     targetCompatibility "11"
     coreLibraryDesugaringEnabled true
   }
-  kotlinOptions.jvmTarget = "1.8"
   buildTypes {
     release {
       minifyEnabled true
@@ -53,6 +43,9 @@ android {
     }
   }
 
+  kotlin {
+    jvmToolchain(11)
+  }
 }
 
 repositories {
@@ -97,7 +90,7 @@ tasks.register('copyAndroidNatives') {
     file("libs/x86_64/").mkdirs()
     file("libs/x86/").mkdirs()
 
-    configurations.getByName("natives").copy().files.each { jar ->
+    configurations.named("natives").orNull.copy().files.each { jar ->
       def outputDir = null
       if(jar.name.endsWith("natives-armeabi-v7a.jar")) outputDir = file("libs/armeabi-v7a")
       if(jar.name.endsWith("natives-arm64-v8a.jar")) outputDir = file("libs/arm64-v8a")
