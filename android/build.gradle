@@ -2,35 +2,35 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-  compileSdk 32
+  namespace "ktx.demo"
+  compileSdk 34
   sourceSets {
     main {
       manifest.srcFile 'AndroidManifest.xml'
-      java.srcDirs('src/main/java', 'src/main/kotlin')
-      aidl.srcDirs('src/main/java', 'src/main/kotlin')
-      renderscript.srcDirs('src/main/java', 'src/main/kotlin')
-      res.srcDirs('res')
-      assets.srcDirs('../assets')
-      jniLibs.srcDirs('libs')
+      java.setSrcDirs(['src/main/java', 'src/main/kotlin'])
+      aidl.setSrcDirs(['src/main/java', 'src/main/kotlin'])
+      renderscript.setSrcDirs(['src/main/java', 'src/main/kotlin'])
+      res.setSrcDirs(['res'])
+      assets.setSrcDirs(['../assets'])
+      jniLibs.setSrcDirs(['libs'])
     }
   }
   packagingOptions {
-    resources.with {
-      excludes += ['META-INF/robovm/ios/robovm.xml',
-        'META-INF/DEPENDENCIES.txt', 'META-INF/DEPENDENCIES', 'META-INF/dependencies.txt', '**/*.gwt.xml']
+    resources {
+      excludes += ['META-INF/robovm/ios/robovm.xml', 'META-INF/DEPENDENCIES.txt', 'META-INF/DEPENDENCIES',
+                   'META-INF/dependencies.txt', '**/*.gwt.xml']
       pickFirsts += ['META-INF/LICENSE.txt', 'META-INF/LICENSE', 'META-INF/license.txt', 'META-INF/LGPL2.1',
-        'META-INF/NOTICE.txt', 'META-INF/NOTICE', 'META-INF/notice.txt']
+                     'META-INF/NOTICE.txt', 'META-INF/NOTICE', 'META-INF/notice.txt']
     }
   }
   defaultConfig {
     applicationId 'ktx.demo'
     minSdkVersion 19
-    targetSdkVersion 32
+    targetSdkVersion 34
     versionCode 1
     versionName "1.0"
     multiDexEnabled true
   }
-  namespace "ktx.demo"
   compileOptions {
     sourceCompatibility "11"
     targetCompatibility "11"
@@ -43,9 +43,8 @@ android {
     }
   }
 
-  kotlin {
-    jvmToolchain(11)
-  }
+  kotlin.compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+  
 }
 
 repositories {
@@ -56,7 +55,7 @@ repositories {
 configurations { natives }
 
 dependencies {
-  coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3'
+  coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
   implementation "com.badlogicgames.gdx-controllers:gdx-controllers-android:$gdxControllersVersion"
   implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
   implementation project(':core')
@@ -90,7 +89,7 @@ tasks.register('copyAndroidNatives') {
     file("libs/x86_64/").mkdirs()
     file("libs/x86/").mkdirs()
 
-    configurations.named("natives").orNull.copy().files.each { jar ->
+    configurations.natives.copy().files.each { jar ->
       def outputDir = null
       if(jar.name.endsWith("natives-armeabi-v7a.jar")) outputDir = file("libs/armeabi-v7a")
       if(jar.name.endsWith("natives-arm64-v8a.jar")) outputDir = file("libs/arm64-v8a")
@@ -106,6 +105,7 @@ tasks.register('copyAndroidNatives') {
     }
   }
 }
+
 tasks.matching { it.name.contains("merge") && it.name.contains("JniLibFolders") }.configureEach { packageTask ->
   packageTask.dependsOn 'copyAndroidNatives'
 }
