@@ -11,7 +11,7 @@ apply plugin: 'robovm'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 ext {
-  mainClassName = "ktx.demo.ios.IOSLauncher"
+  mainClassName = "ktx.demo.IOSLauncher"
 }
 
 launchIPhoneSimulator.dependsOn build

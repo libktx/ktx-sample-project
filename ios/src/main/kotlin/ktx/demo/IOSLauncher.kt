@@ -1,6 +1,6 @@
 @file:JvmName("IOSLauncher")
 
-package ktx.demo.ios
+package ktx.demo
 
 import org.robovm.apple.foundation.NSAutoreleasePool
 import org.robovm.apple.uikit.UIApplication
